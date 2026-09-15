@@ -1,5 +1,5 @@
 // 앱 화면 캐시 + 갤러리 "공유"로 받은 파일 전달
-const SHELL = 'shell-v1';
+const SHELL = 'shell-v2';
 const SHARE = 'share-inbox';
 const ASSETS = ['./', './index.html', './uploader.js', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
