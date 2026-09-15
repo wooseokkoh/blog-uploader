@@ -168,7 +168,7 @@
 </main>
 
 <script type="module">
-  import { uploadFiles, checkAccess, cleanSegment, folderFor, MAX_BYTES } from './uploader.js';
+  import { uploadFiles, checkAccess, cleanSegment, folderFor, MAX_BYTES, CHUNK_BYTES, partsOf } from './uploader.js';
 
   const $ = (id) => document.getElementById(id);
   const store = {
@@ -193,11 +193,16 @@
   }
 
   function explain(e) {
-    if (!e || e.status === undefined) return '인터넷 연결을 확인하고 다시 시도해 주세요.';
-    if (e.status === 401) return '토큰이 틀렸거나 만료됐어요. 설정(⚙)에서 새 토큰을 넣어 주세요.';
-    if (e.status === 403 || e.status === 404) return '이 저장소에 파일을 올릴 권한이 없어요. 토큰의 저장소 선택(do-better-workspace)과 Contents(Read and write) 권한을 확인해 주세요.';
-    if (e.status === 413 || e.status === 422) return `파일이 너무 크거나 올릴 수 없는 파일이에요. (${esc(e.message)})`;
-    return `오류가 났어요 (${e.status}): ${esc(e.message)}`;
+    const where = e?.file ? ` (파일: ${esc(e.file)}${e.fileSize ? ', ' + fmt(e.fileSize) : ''})` : '';
+    const detail = e ? `<br><small>상세: ${esc(e.status ?? e.name ?? '')} ${esc(e.message ?? '')}</small>` : '';
+    let text;
+    if (e?.kind === 'read') text = `파일을 읽지 못했어요${where}. 구글 포토처럼 클라우드에만 있는 사진·영상이면 먼저 폰에 저장(다운로드)한 뒤 다시 골라 주세요.`;
+    else if (!e || e.status === undefined) text = `인터넷 연결이 끊겼어요${where}. 와이파이에서 다시 시도해 보세요.`;
+    else if (e.status === 401) text = '토큰이 틀렸거나 만료됐어요. 설정(⚙)에서 새 토큰을 넣어 주세요.';
+    else if (e.status === 403 || e.status === 404) text = '이 저장소에 파일을 올릴 권한이 없어요. 토큰의 저장소 선택(do-better-workspace)과 Contents(Read and write) 권한을 확인해 주세요.';
+    else if (e.status === 413 || e.status === 422) text = `GitHub가 파일을 받지 않았어요${where}.`;
+    else text = `오류가 났어요${where}.`;
+    return text + detail;
   }
 
   function fileToBase64(file) {
@@ -261,7 +266,7 @@
 
   // ---- 선택한 파일 ----
   function addFiles(list) {
-    for (const file of list) items.push({ file, url: URL.createObjectURL(file), li: null });
+    for (const file of list) items.push({ file, url: URL.createObjectURL(file), li: null, shas: null });
     renderGrid();
   }
 
@@ -271,6 +276,7 @@
     items.forEach((it, i) => {
       const li = document.createElement('li');
       if (it.file.size > MAX_BYTES) li.classList.add('big');
+      if (it.shas && it.shas.length === partsOf(it.file.size)) li.classList.add('done');
       const isVideo = it.file.type.startsWith('video/');
       const media = document.createElement(isVideo ? 'video' : 'img');
       if (isVideo) { media.muted = true; media.playsInline = true; media.preload = 'metadata'; media.src = it.url + '#t=0.1'; }
@@ -294,8 +300,11 @@
     });
     const total = items.reduce((s, it) => s + it.file.size, 0);
     const big = items.filter((it) => it.file.size > MAX_BYTES).length;
+    const split = items.filter((it) => it.file.size > CHUNK_BYTES && it.file.size <= MAX_BYTES).length;
     $('summary').textContent = items.length
-      ? `${items.length}개 선택 · 총 ${fmt(total)}` + (big ? ` · 100MB 넘는 파일 ${big}개는 올릴 수 없어요 (빨간 테두리, × 로 빼 주세요)` : '')
+      ? `${items.length}개 선택 · 총 ${fmt(total)}` +
+        (split ? ` · 10MB 넘는 파일 ${split}개는 조각으로 나눠 올려요 (PC에서 합쳐요)` : '') +
+        (big ? ` · 300MB 넘는 파일 ${big}개는 올릴 수 없어요 (빨간 테두리, × 로 빼 주세요)` : '')
       : '';
     const noted = hasNote();
     $('uploadBtn').disabled = busy || (!items.length && !noted) || big > 0;
@@ -372,17 +381,30 @@
 
     const folder = folderFor(cfg.dir, posting, new Date());
     const [o, r] = cfg.repo.split('/');
+    let committing = false;
     try {
       await uploadFiles({
         token, owner: o, repo: r, branch: cfg.branch, folder,
-        files: items.map((it) => ({ name: it.file.name, getBase64: () => fileToBase64(it.file) })),
+        files: items.map((it) => ({
+          name: it.file.name,
+          size: it.file.size,
+          shas: it.shas,
+          read: (s, e) => fileToBase64(it.file.slice(s, e)),
+        })),
         note,
         message: `모바일 업로드: ${posting} (${total}개${note ? ' + 가이드·메모' : ''})`,
         onProgress: (p) => {
-          if (p.state === 'committing') return setBar('마무리 저장 중…');
-          items[p.index].li.className = p.state === 'done' ? 'done' : 'up';
-          if (p.state === 'done') done++;
-          setBar(`${done} / ${total} 올리는 중… 올리는 동안 이 화면을 켜 두세요.`);
+          if (p.state === 'committing') { committing = true; return setBar('마무리 저장 중…'); }
+          const it = items[p.index];
+          if (p.shas) it.shas = p.shas;
+          if (p.state === 'uploading') {
+            it.li.className = 'up';
+            setBar(`${done + 1} / ${total} 올리는 중${p.parts > 1 ? ` (큰 파일 ${p.part}/${p.parts}조각)` : ''}… 이 화면을 켜 두세요.`);
+          } else if (p.state === 'done') {
+            it.li.className = 'done';
+            done++;
+            setBar(`${done} / ${total} 올림`);
+          }
         },
       });
 
@@ -400,7 +422,12 @@
         `완료! <b>${esc(posting)}</b> ${what}를 저장했어요. <a href="${ghUrl(folder)}" target="_blank" rel="noopener">GitHub에서 보기</a>` +
         `<br>PC에서 "${esc(posting)} 블로그 써줘"라고 말하면 가이드와 사진을 보고 원고를 써 드려요.`);
     } catch (e) {
-      say('result', 'err', explain(e) + '<br>다시 누르면 처음부터 다시 올려요.');
+      // 마무리 단계에서 실패하면 조각 기록을 믿지 않고 처음부터
+      if (committing) items.forEach((it) => { it.shas = null; });
+      const resumable = items.some((it) => it.shas?.length);
+      say('result', 'err', explain(e) + (resumable
+        ? '<br>다시 누르면 올라간 파일은 건너뛰고 이어서 올려요.'
+        : '<br>다시 누르면 처음부터 다시 올려요.'));
     } finally {
       try { await lock?.release(); } catch {}
       busy = false;
