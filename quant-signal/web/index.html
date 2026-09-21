@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>퀀트 시그널</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f6feb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6feb'/%3E%3Cpath d='M6 22 L12 15 L17 19 L26 8' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg:#f6f7f9; --card:#fff; --text:#1b1f24; --muted:#5b6470; --line:#e3e6ea;
+    --accent:#1f6feb; --accent-text:#fff; --danger:#c62828; --ok:#1a7f37; --warn:#b26a00;
+    --soft:#eef3fe;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0f1115; --card:#171a21; --text:#e8eaed; --muted:#9aa3ad; --line:#2a2f38;
+      --accent:#4c8dff; --accent-text:#0b0d10; --danger:#ef5350; --ok:#3fb950; --warn:#d29922;
+      --soft:#1b2433;
+    }
+  }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.5 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+  header {
+    position:sticky; top:0; z-index:2; padding:12px 16px;
+    padding-top:calc(12px + env(safe-area-inset-top));
+    background:var(--bg); border-bottom:1px solid var(--line);
+    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  }
+  h1 { font-size:18px; margin:0; }
+  main { max-width:720px; margin:0 auto; padding:16px 16px calc(32px + env(safe-area-inset-bottom)); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
+  .muted { color:var(--muted); font-size:14px; }
+  .regime { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .dot { width:12px; height:12px; border-radius:50%; flex:none; }
+  .regime-name { font-size:20px; font-weight:700; }
+  .axes { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .axis { font-size:13px; padding:3px 10px; border-radius:99px; border:1px solid var(--line); }
+  .axis.on  { color:var(--ok);     border-color:var(--ok); }
+  .axis.off { color:var(--danger); border-color:var(--danger); }
+  .axis.na  { color:var(--muted); }
+  .banner { margin-top:12px; padding:10px 12px; border-radius:10px; background:var(--soft); font-size:14px; }
+  .sig-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .sym { font-size:19px; font-weight:700; letter-spacing:.3px; }
+  .badge { font-size:13px; font-weight:700; padding:3px 10px; border-radius:99px; }
+  .b-buy    { background:var(--ok);     color:#fff; }
+  .b-hold   { background:var(--soft);   color:var(--muted); }
+  .b-reduce { background:var(--warn);   color:#fff; }
+  .b-exit   { background:var(--danger); color:#fff; }
+  .score-row { display:flex; align-items:center; gap:10px; margin:12px 0 4px; }
+  .meter { flex:1; height:8px; background:var(--soft); border-radius:99px; overflow:hidden; }
+  .meter span { display:block; height:100%; background:var(--accent); }
+  .score-val { font-variant-numeric:tabular-nums; font-weight:700; min-width:42px; text-align:right; }
+  .reason { font-size:14px; color:var(--muted); margin:6px 0 0; }
+  table { width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; }
+  th, td { text-align:right; padding:7px 4px; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; }
+  th:first-child, td:first-child { text-align:left; font-variant-numeric:normal; }
+  th { color:var(--muted); font-weight:600; font-size:13px; }
+  tr:last-child td { border-bottom:0; }
+  .kv { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; margin-top:12px; }
+  .kv div { background:var(--bg); border-radius:10px; padding:9px 11px; }
+  .kv dt { font-size:12px; color:var(--muted); margin:0 0 2px; }
+  .kv dd { margin:0; font-weight:700; font-variant-numeric:tabular-nums; }
+  .kv dd.stop { color:var(--danger); }
+  .factors { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .factors span { font-size:12px; color:var(--muted); background:var(--bg); border-radius:99px; padding:3px 9px; }
+  .filters { display:flex; gap:8px; margin-bottom:14px; }
+  .filters button {
+    flex:1; font:inherit; font-size:14px; font-weight:600; cursor:pointer; padding:10px;
+    border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--muted);
+  }
+  .filters button[aria-pressed="true"] { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
+  footer { margin-top:20px; font-size:12px; color:var(--muted); line-height:1.7; }
+  .err { color:var(--danger); }
+</style>
+</head>
+<body>
+<header>
+  <h1>퀀트 시그널</h1>
+  <span class="muted" id="stamp">불러오는 중…</span>
+</header>
+
+<main>
+  <section class="card" id="regime-card" hidden>
+    <div class="regime">
+      <span class="dot" id="regime-dot"></span>
+      <span class="regime-name" id="regime-name"></span>
+      <span class="muted" id="regime-score"></span>
+    </div>
+    <div class="axes" id="regime-axes"></div>
+    <div class="banner" id="regime-banner" hidden></div>
+  </section>
+
+  <div class="filters" id="filters" hidden>
+    <button data-filter="buy"  aria-pressed="true">분할 매수</button>
+    <button data-filter="all"  aria-pressed="false">전체</button>
+  </div>
+
+  <div id="list"></div>
+  <p id="status" class="muted"></p>
+
+  <footer>
+    <p id="disclaimer"></p>
+    <p>규칙 기반 엔진이 계산한 결과입니다. 점수·진입가·손절가·비중은 모두 공개된 공식으로 산출되며, 모든 이용자에게 동일하게 제공됩니다.</p>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1285 @@
+{
+  "schema_version": 1,
+  "engine_version": "0.1.0",
+  "generated_at": "2026-09-21T04:31:00.328767+00:00",
+  "market": "US_EQUITY_DEMO",
+  "regime": {
+    "state": "RISK_ON",
+    "score": 1.0,
+    "components": {
+      "trend": true,
+      "volatility": true,
+      "credit": true
+    },
+    "detail": {
+      "spy_vs_sma200_pct": 5.4858,
+      "vix_term_ratio": 0.7532,
+      "credit_ratio_vs_sma_pct": 1.5357
+    },
+    "notes": []
+  },
+  "regime_label": "위험선호",
+  "universe": {
+    "requested": 40,
+    "with_data": 40,
+    "after_liquidity": 40,
+    "emitted": 25
+  },
+  "params": {
+    "regime": {
+      "trend_symbol": "SPY",
+      "trend_sma": 200,
+      "vix_symbol": "^VIX",
+      "vix_far_symbol": "^VIX3M",
+      "vix_contango_max": 1.0,
+      "credit_risk_symbol": "HYG",
+      "credit_safe_symbol": "IEF",
+      "credit_sma": 50
+    },
+    "factors": {
+      "momentum_lookback": 252,
+      "momentum_skip": 21,
+      "trend_sma": 200,
+      "vol_lookback": 60,
+      "winsorize_z": 3.0,
+      "weights": {
+        "momentum": 0.4,
+        "trend": 0.3,
+        "low_vol": 0.2,
+        "volume_confirm": 0.1
+      }
+    },
+    "risk": {
+      "atr_period": 14,
+      "stop_atr_mult": 2.0,
+      "account_risk_pct": 1.0,
+      "max_position_pct": 10.0,
+      "tranches": [
+        [
+          0.5,
+          0.4
+        ],
+        [
+          1.0,
+          0.3
+        ],
+        [
+          1.5,
+          0.3
+        ]
+      ],
+      "valid_days": 5
+    },
+    "score": {
+      "accumulate_at": 70.0,
+      "hold_at": 55.0,
+      "reduce_below": 35.0
+    },
+    "min_dollar_volume": 5000000.0,
+    "min_history_days": 260,
+    "top_n": 25
+  },
+  "signals": [
+    {
+      "symbol": "S33",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 172.3908,
+      "score": 100.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 100 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 97.5,
+        "trend": 100.0,
+        "low_vol": 35.0,
+        "volume_confirm": 22.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 167.11,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 161.82,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 156.53,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 162.35,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 141.21 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 141.21,
+        "atr": 10.5715,
+        "atr_pct": 6.132,
+        "position_size_pct": 7.68,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 21.1431
+      }
+    },
+    {
+      "symbol": "S14",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 167.8859,
+      "score": 97.5,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 98 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 100.0,
+        "trend": 97.5,
+        "low_vol": 50.0,
+        "volume_confirm": 80.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 164.99,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 162.09,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 163.81,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 163.77,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 152.17 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 152.17,
+        "atr": 5.7957,
+        "atr_pct": 3.452,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 11.5914
+      }
+    },
+    {
+      "symbol": "S38",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 116.3957,
+      "score": 95.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 95 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 95.0,
+        "trend": 92.5,
+        "low_vol": 47.5,
+        "volume_confirm": 50.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 113.62,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 110.84,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 108.06,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 111.12,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 100.0 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 100.0,
+        "atr": 5.5589,
+        "atr_pct": 4.776,
+        "position_size_pct": 9.99,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 11.1177
+      }
+    },
+    {
+      "symbol": "S30",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 217.6998,
+      "score": 92.5,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 92 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 87.5,
+        "trend": 90.0,
+        "low_vol": 65.0,
+        "volume_confirm": 65.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 213.22,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 208.74,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 204.26,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 209.19,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 191.26 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 191.26,
+        "atr": 8.9631,
+        "atr_pct": 4.117,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 17.9261
+      }
+    },
+    {
+      "symbol": "S02",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 183.2011,
+      "score": 90.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 90 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 90.0,
+        "trend": 65.0,
+        "low_vol": 22.5,
+        "volume_confirm": 95.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 177.16,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 171.13,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 182.29,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 176.89,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 152.74 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 152.74,
+        "atr": 12.074,
+        "atr_pct": 6.591,
+        "position_size_pct": 7.33,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 24.148
+      }
+    },
+    {
+      "symbol": "S05",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 116.8395,
+      "score": 87.5,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 88 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 72.5,
+        "trend": 95.0,
+        "low_vol": 80.0,
+        "volume_confirm": 7.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 115.37,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 113.9,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 112.44,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 114.05,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 108.18 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 108.18,
+        "atr": 2.9364,
+        "atr_pct": 2.513,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 5.8727
+      }
+    },
+    {
+      "symbol": "S10",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 121.0773,
+      "score": 85.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 85 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 92.5,
+        "trend": 45.0,
+        "low_vol": 67.5,
+        "volume_confirm": 60.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 118.64,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 116.19,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 113.75,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 116.44,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 106.67 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 106.67,
+        "atr": 4.8836,
+        "atr_pct": 4.033,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 9.7672
+      }
+    },
+    {
+      "symbol": "S06",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 111.5842,
+      "score": 82.5,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 82 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 65.0,
+        "trend": 77.5,
+        "low_vol": 97.5,
+        "volume_confirm": 72.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 110.53,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 109.48,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 111.09,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 110.38,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 106.17 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 106.17,
+        "atr": 2.1082,
+        "atr_pct": 1.889,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 4.2163
+      }
+    },
+    {
+      "symbol": "S26",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 92.1457,
+      "score": 80.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 80 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 77.5,
+        "trend": 87.5,
+        "low_vol": 70.0,
+        "volume_confirm": 47.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 90.11,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 88.08,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 86.04,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 88.28,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 80.14 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 80.14,
+        "atr": 4.0702,
+        "atr_pct": 4.417,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 8.1404
+      }
+    },
+    {
+      "symbol": "S04",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 166.4499,
+      "score": 77.5,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 78 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 67.5,
+        "trend": 85.0,
+        "low_vol": 85.0,
+        "volume_confirm": 45.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 164.08,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 161.71,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 163.4,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 163.17,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 153.69 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 153.69,
+        "atr": 4.7395,
+        "atr_pct": 2.847,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 9.4789
+      }
+    },
+    {
+      "symbol": "S00",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 88.5604,
+      "score": 75.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 75 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 57.5,
+        "trend": 75.0,
+        "low_vol": 72.5,
+        "volume_confirm": 92.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 87.38,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 86.2,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 85.02,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 86.32,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 81.6 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 81.6,
+        "atr": 2.3611,
+        "atr_pct": 2.666,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 4.7222
+      }
+    },
+    {
+      "symbol": "S36",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 88.9822,
+      "score": 72.5,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 72 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 70.0,
+        "trend": 62.5,
+        "low_vol": 62.5,
+        "volume_confirm": 77.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 87.25,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 85.52,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 83.78,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 85.69,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 78.76 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 78.76,
+        "atr": 3.4661,
+        "atr_pct": 3.895,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 6.9322
+      }
+    },
+    {
+      "symbol": "S18",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 168.155,
+      "score": 70.0,
+      "action": "ACCUMULATE",
+      "action_label": "분할 매수",
+      "reason": "점수 70 ≥ 70, 레짐 RISK_ON",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 80.0,
+        "trend": 80.0,
+        "low_vol": 17.5,
+        "volume_confirm": 87.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 162.99,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 157.83,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 155.72,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 159.26,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 138.62 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 138.62,
+        "atr": 10.3206,
+        "atr_pct": 6.138,
+        "position_size_pct": 7.72,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 20.6412
+      }
+    },
+    {
+      "symbol": "S08",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 47.2688,
+      "score": 67.5,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 68 — 중위권, 신규 진입 기준 미달",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 60.0,
+        "trend": 57.5,
+        "low_vol": 60.0,
+        "volume_confirm": 97.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 46.41,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 45.54,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 44.68,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 45.63,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 42.18 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 42.18,
+        "atr": 1.7268,
+        "atr_pct": 3.653,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 3.4535
+      }
+    },
+    {
+      "symbol": "S27",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 173.9812,
+      "score": 65.0,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 65 — 중위권, 신규 진입 기준 미달",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 85.0,
+        "trend": 52.5,
+        "low_vol": 25.0,
+        "volume_confirm": 15.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 170.57,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 167.16,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 171.19,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 169.73,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 156.1 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 156.1,
+        "atr": 6.8173,
+        "atr_pct": 3.918,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 13.6345
+      }
+    },
+    {
+      "symbol": "S20",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 228.9311,
+      "score": 62.5,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 62 — 중위권, 신규 진입 기준 미달",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 82.5,
+        "trend": 70.0,
+        "low_vol": 45.0,
+        "volume_confirm": 12.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 223.65,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 218.37,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 213.08,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 218.9,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 197.77 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 197.77,
+        "atr": 10.5646,
+        "atr_pct": 4.615,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 21.1292
+      }
+    },
+    {
+      "symbol": "S13",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 155.17,
+      "score": 60.0,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 60 — 중위권, 신규 진입 기준 미달",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 55.0,
+        "trend": 82.5,
+        "low_vol": 42.5,
+        "volume_confirm": 62.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 151.59,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 148.02,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 152.64,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 150.83,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 136.53 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 136.53,
+        "atr": 7.153,
+        "atr_pct": 4.61,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 14.3059
+      }
+    },
+    {
+      "symbol": "S39",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 86.8448,
+      "score": 57.5,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 57 — 중위권, 신규 진입 기준 미달",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 50.0,
+        "trend": 42.5,
+        "low_vol": 90.0,
+        "volume_confirm": 5.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 85.92,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 84.99,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 84.06,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 85.08,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 81.37 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 81.37,
+        "atr": 1.8566,
+        "atr_pct": 2.138,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 3.7133
+      }
+    },
+    {
+      "symbol": "S32",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 70.5337,
+      "score": 55.0,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 55 — 중위권, 신규 진입 기준 미달",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 35.0,
+        "trend": 30.0,
+        "low_vol": 82.5,
+        "volume_confirm": 75.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 69.6,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 68.66,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 67.73,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 68.76,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 65.01 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 65.01,
+        "atr": 1.8712,
+        "atr_pct": 2.653,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 3.7425
+      }
+    },
+    {
+      "symbol": "S11",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 122.4051,
+      "score": 52.5,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 52 — 관망",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 47.5,
+        "trend": 60.0,
+        "low_vol": 37.5,
+        "volume_confirm": 42.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 119.47,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 116.53,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 113.59,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 116.82,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 105.07 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 105.07,
+        "atr": 5.8761,
+        "atr_pct": 4.801,
+        "position_size_pct": 9.94,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 11.7523
+      }
+    },
+    {
+      "symbol": "S19",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 41.074,
+      "score": 50.0,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 50 — 관망",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 30.0,
+        "trend": 27.5,
+        "low_vol": 100.0,
+        "volume_confirm": 55.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 40.7,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 40.32,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 39.94,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 40.36,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 38.84 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 38.84,
+        "atr": 0.757,
+        "atr_pct": 1.843,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 1.5141
+      }
+    },
+    {
+      "symbol": "S01",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 39.12,
+      "score": 47.5,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 48 — 관망",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 20.0,
+        "trend": 47.5,
+        "low_vol": 92.5,
+        "volume_confirm": 20.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 38.67,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 38.22,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 38.09,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 38.36,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 36.57 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 36.57,
+        "atr": 0.8973,
+        "atr_pct": 2.294,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 1.7947
+      }
+    },
+    {
+      "symbol": "S37",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 44.6045,
+      "score": 45.0,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 45 — 관망",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 25.0,
+        "trend": 22.5,
+        "low_vol": 87.5,
+        "volume_confirm": 67.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 44.1,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 43.59,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 43.08,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 43.64,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 41.61 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 41.61,
+        "atr": 1.0179,
+        "atr_pct": 2.282,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 2.0359
+      }
+    },
+    {
+      "symbol": "S24",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 60.3537,
+      "score": 42.5,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 42 — 관망",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 27.5,
+        "trend": 67.5,
+        "low_vol": 52.5,
+        "volume_confirm": 10.0
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 59.21,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 58.06,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 59.22,
+            "weight": 0.3,
+            "note": "20일선 지지"
+          }
+        ],
+        "avg_entry": 58.87,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 54.28 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 54.28,
+        "atr": 2.2938,
+        "atr_pct": 3.801,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 4.5876
+      }
+    },
+    {
+      "symbol": "S31",
+      "market": "US_EQUITY_DEMO",
+      "as_of": "2026-09-21",
+      "last_close": 36.0106,
+      "score": 40.0,
+      "action": "HOLD",
+      "action_label": "보유 유지",
+      "reason": "점수 40 — 관망",
+      "regime": "RISK_ON",
+      "factors": {
+        "momentum": 22.5,
+        "trend": 32.5,
+        "low_vol": 95.0,
+        "volume_confirm": 37.5
+      },
+      "entry_plan": {
+        "method": "3분할 지정가",
+        "tranches": [
+          {
+            "price": 35.6,
+            "weight": 0.4,
+            "note": "종가 -0.5 ATR"
+          },
+          {
+            "price": 35.2,
+            "weight": 0.3,
+            "note": "종가 -1 ATR"
+          },
+          {
+            "price": 34.79,
+            "weight": 0.3,
+            "note": "종가 -1.5 ATR"
+          }
+        ],
+        "avg_entry": 35.24,
+        "valid_until": "2026-09-28",
+        "invalidate_if": "종가 33.61 하회 시 신호 무효"
+      },
+      "risk": {
+        "stop_loss": 33.61,
+        "atr": 0.8119,
+        "atr_pct": 2.255,
+        "position_size_pct": 10.0,
+        "max_loss_pct": 1.0,
+        "risk_per_share": 1.6238
+      }
+    }
+  ],
+  "disclaimer": "본 정보는 투자 참고자료이며 투자 권유가 아닙니다. 모든 투자의 최종 판단과 책임은 투자자 본인에게 있으며 원금 손실이 발생할 수 있습니다."
+}
