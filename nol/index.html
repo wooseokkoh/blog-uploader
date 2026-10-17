@@ -141,10 +141,10 @@
   .tier[open-state="1"] .arrow { transform: rotate(90deg); }
   .tier.flash { outline: 3px solid var(--accent); }
   table { width: 100%; border-collapse: collapse; font-size: 15px; }
-  th, td { padding: 8px 10px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th, td { padding: 8px 10px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; word-break: keep-all; }
   th { background: var(--soft); font-size: 12px; color: var(--muted); font-weight: 600; }
   td.num, th.num { text-align: right; white-space: nowrap; width: 3.5em; }
-  td.name { font-weight: 600; }
+  td.name { font-weight: 600; white-space: nowrap; }
   .note-line { padding: 8px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); }
   .empty-msg { padding: 10px 14px 14px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
 
