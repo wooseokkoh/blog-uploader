@@ -42,6 +42,9 @@
     display: block; width: 100%; margin-top: 6px; font: inherit; font-size: 17px; font-weight: 400;
     padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text);
   }
+  .check { display: flex; align-items: flex-start; gap: 10px; font-weight: 600; margin-bottom: 16px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); cursor: pointer; }
+  .check input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--accent); }
+  .check small { display: block; color: var(--muted); font-weight: 400; font-size: 14px; }
   .hint { color: var(--muted); font-size: 14px; font-weight: 400; margin: 6px 0 0; }
   code { font-size: 13px; word-break: break-all; }
   a { color: var(--accent); }
@@ -141,6 +144,11 @@
       <label class="field">체험 메모 <span class="opt">(선택)</span>
         <textarea id="memo" rows="3" placeholder="예: 하체 운동 때 안 되던 자세를 짚어줌, 샤워실이 깨끗했음"></textarea>
         <p class="hint">직접 느낀 점을 적어 주면 블로그 원고가 훨씬 사람답게 나와요.</p>
+      </label>
+      <label class="check">
+        <input id="needShorts" type="checkbox">
+        <span>숏츠·클립 영상도 만들기
+          <small>체크하면 PC에서 "블로그 써줘" 할 때 숏츠 영상 작업까지 이어져요.</small></span>
       </label>
 
       <label class="pick" for="picker">
@@ -315,17 +323,19 @@
 
   // ---- 가이드·메모 (info.md) ----
   const NOTE_IDS = ['guideUrl', 'guideText', 'memo'];
-  const hasNote = () => NOTE_IDS.some((id) => $(id).value.trim());
+  const hasNote = () => NOTE_IDS.some((id) => $(id).value.trim()) || $('needShorts').checked;
   const pad = (n) => String(n).padStart(2, '0');
 
   function buildNote(posting, count) {
     const url = $('guideUrl').value.trim();
     const guide = $('guideText').value.trim();
     const memo = $('memo').value.trim();
-    if (!url && !guide && !memo) return '';
+    const shorts = $('needShorts').checked;
+    if (!url && !guide && !memo && !shorts) return '';
     const d = new Date();
     let md = `# ${posting}\n\n- 올린 시각: ${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}\n- 함께 올린 파일: ${count}개\n`;
     if (url) md += `- 가이드 URL: ${url}\n`;
+    if (shorts) md += `- 숏츠 영상: 필요\n`;
     if (guide) md += `\n## 가이드 내용\n\n${guide}\n`;
     if (memo) md += `\n## 체험 메모\n\n${memo}\n`;
     return md;
@@ -333,11 +343,12 @@
 
   // 쓰다 만 내용은 폰에 임시 저장 (앱을 닫았다 열어도 유지)
   function saveDraft() {
-    store.set('draft', Object.fromEntries(['posting', ...NOTE_IDS].map((id) => [id, $(id).value])));
+    store.set('draft', { ...Object.fromEntries(['posting', ...NOTE_IDS].map((id) => [id, $(id).value])), needShorts: $('needShorts').checked });
   }
   function loadDraft() {
     const draft = store.get('draft', {});
     for (const id of ['posting', ...NOTE_IDS]) if (draft[id]) $(id).value = draft[id];
+    $('needShorts').checked = !!draft.needShorts;
   }
 
   function renderFolder() {
@@ -368,7 +379,7 @@
 
     busy = true;
     renderGrid();
-    for (const id of ['picker', 'posting', ...NOTE_IDS]) $(id).disabled = true;
+    for (const id of ['picker', 'posting', 'needShorts', ...NOTE_IDS]) $(id).disabled = true;
     $('result').hidden = true;
     $('progress').hidden = false;
 
@@ -416,6 +427,7 @@
       items.forEach((it) => URL.revokeObjectURL(it.url));
       items = [];
       for (const id of NOTE_IDS) $(id).value = '';
+      $('needShorts').checked = false;
       saveDraft();
       const what = [total ? `${total}개` : '', note ? '가이드·메모' : ''].filter(Boolean).join(' + ');
       say('result', 'ok',
@@ -431,7 +443,7 @@
     } finally {
       try { await lock?.release(); } catch {}
       busy = false;
-      for (const id of ['picker', 'posting', ...NOTE_IDS]) $(id).disabled = false;
+      for (const id of ['picker', 'posting', 'needShorts', ...NOTE_IDS]) $(id).disabled = false;
       $('progress').hidden = true;
       renderGrid();
       renderHistory();
@@ -460,6 +472,7 @@
   $('picker').onchange = (e) => { addFiles(e.target.files); e.target.value = ''; };
   $('posting').oninput = () => { renderFolder(); saveDraft(); };
   for (const id of NOTE_IDS) $(id).oninput = () => { saveDraft(); renderGrid(); };
+  $('needShorts').onchange = () => { saveDraft(); renderGrid(); };
   $('uploadBtn').onclick = upload;
   addEventListener('beforeunload', (e) => { if (busy) { e.preventDefault(); e.returnValue = ''; } });
 
